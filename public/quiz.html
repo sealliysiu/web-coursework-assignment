@@ -1,36 +1,23 @@
+<!-- public/quiz.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Quiz Battle</title>
-  <link rel="stylesheet" href="style.css">
-  <script defer src="/socket.io/socket.io.js"></script>
-  <script defer src="client.js"></script>
 </head>
 <body>
-  <header>
-    <h1>Quiz Battle</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="quiz.html">Quiz</a>
-    </nav>
-  </header>
-  <main>
-    <div id="login">
-      <input id="nameInput" placeholder="Enter your name">
-      <button onclick="joinGame()">Join</button>
-    </div>
-    <div id="lobby" style="display:none;">
-      <h2>Online Players</h2>
-      <ul id="players"></ul>
-    </div>
-    <div id="game" style="display:none;">
-      <h2 id="question"></h2>
-      <div id="answers"></div>
-      <div id="feedback"></div>
-    </div>
-  </main>
-  <footer>© 2025 Your Name</footer>
+  <div id="login">
+    <p>Welcome to the quiz! Enter your name:</p>
+    <input id="username" />
+    <button id="submit-name">Submit</button>
+  </div>
+
+  <div id="lobby" style="display:none;">
+    <h2>Challenge a player!</h2>
+    <ul id="users"></ul>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="quiz.js"></script>
 </body>
 </html>
