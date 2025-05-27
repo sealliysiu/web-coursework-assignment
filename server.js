@@ -98,39 +98,49 @@ io.on("connection", (socket) => {
     game.answered = {};
   }
 
-  function evaluateRound(roomId) {
-    const game = games[roomId];
-    const correctAnswer = quizQuestions[game.index].answer;
-    const [p1, p2] = game.players;
-    const a1 = game.answered[p1];
-    const a2 = game.answered[p2];
-    let result = { [p1]: 0, [p2]: 0 };
+function evaluateRound(roomId) {
+  const game = games[roomId];
+  const correctAnswer = quizQuestions[game.index].answer;
 
-    if (a1.answerIndex === correctAnswer && a2.answerIndex === correctAnswer) {
-      result[a1.time < a2.time ? p1 : p2] = 2;
-      result[a1.time > a2.time ? p1 : p2] = 1;
-    } else if (a1.answerIndex === correctAnswer) {
-      result[p1] = 2;
-    } else if (a2.answerIndex === correctAnswer) {
-      result[p2] = 2;
-    }
+  const [p1, p2] = game.players;
+  const a1 = game.answered[p1];
+  const a2 = game.answered[p2];
 
-    game.scores[p1] += result[p1];
-    game.scores[p2] += result[p2];
+  let result = { [p1]: 0, [p2]: 0 };
 
-    io.to(roomId).emit("roundResult", {
-      correct: correctAnswer,
-      scores: game.scores,
-    });
-
-    game.index += 1;
-
-    if (game.index < quizQuestions.length) {
-      setTimeout(() => sendQuestion(roomId), 5000);
-    } else {
-      io.to(roomId).emit("gameOver", { finalScores: game.scores });
-    }
+  if (a1.answerIndex === correctAnswer && a2.answerIndex === correctAnswer) {
+    result[a1.time < a2.time ? p1 : p2] = 2;
+    result[a1.time > a2.time ? p1 : p2] = 1;
+  } else if (a1.answerIndex === correctAnswer) {
+    result[p1] = 2;
+  } else if (a2.answerIndex === correctAnswer) {
+    result[p2] = 2;
   }
+
+  game.scores[p1] += result[p1];
+  game.scores[p2] += result[p2];
+
+  io.to(roomId).emit("roundResult", {
+    correct: correctAnswer,
+    scores: game.scores,
+  });
+
+  game.index += 1;
+
+  if (game.index < quizQuestions.length) {
+    setTimeout(() => sendQuestion(roomId), 5000);
+  } else {
+    let winner = "tie";
+    if (game.scores[p1] > game.scores[p2]) winner = p1;
+    else if (game.scores[p2] > game.scores[p1]) winner = p2;
+
+    io.to(roomId).emit("gameOver", {
+      finalScores: game.scores,
+      winner,
+    });
+  }
+}
+
 });
 
 server.listen(3000, () => {

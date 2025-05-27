@@ -73,5 +73,21 @@ socket.on("roundResult", ({ correct, scores }) => {
 });
 
 socket.on("gameOver", ({ finalScores }) => {
-  alert(`Game Over!\nFinal Scores: ${JSON.stringify(finalScores)}`);
-});
+    let names = Object.keys(finalScores);
+    let scores = Object.values(finalScores);
+  
+    let resultText = `Game Over!\n`;
+    resultText += `${names[0]}: ${scores[0]}\n`;
+    resultText += `${names[1]}: ${scores[1]}\n`;
+  
+    if (scores[0] > scores[1]) {
+      resultText += `Winner: ${names[0]}`;
+    } else if (scores[0] < scores[1]) {
+      resultText += `Winner: ${names[1]}`;
+    } else {
+      resultText += `It's a tie!`;
+    }
+  
+    alert(resultText);
+  });
+  
