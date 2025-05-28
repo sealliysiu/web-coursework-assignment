@@ -36,6 +36,7 @@ io.on("connection", (socket) => {
 
   socket.on("challenge", (targetSocketId) => {
     const challenger = players[socket.id];
+    console.log(`${challenger} (socket ${socket.id}) is challenging ${targetSocketId}`);
     io.to(targetSocketId).emit("challengeReceived", {
       from: challenger,
       socketId: socket.id,

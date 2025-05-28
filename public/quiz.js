@@ -26,19 +26,21 @@ socket.on("updatePlayerList", (users) => {
       const li = document.createElement("li");
       li.textContent = name;
       li.dataset.id = id;
-      li.onclick = () => 
+      li.onclick = () => {
         console.log("Clicking on", name, id);
         socket.emit("challenge", id);
+      }
       userList.appendChild(li);
     }
   });
 });
 
 socket.on("challengeReceived", ({ from, socketId }) => {
-  if (confirm(`${from} challenges you! Accept?`)) {
-    socket.emit("challengeAccepted", { challengerId: socketId });
-  }
+  console.log(`Received challenge from ${from} (${socketId})`);
+  // 临时跳过 confirm，直接接受
+  socket.emit("challengeAccepted", { challengerId: socketId });
 });
+
 
 socket.on("startGame", ({ roomId }) => {
   currentRoomId = roomId;
