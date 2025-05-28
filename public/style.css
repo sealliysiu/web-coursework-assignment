@@ -1,19 +1,53 @@
 body {
-  font-family: Arial, sans-serif;
-  padding: 20px;
-  background: #f9f9f9;
+  background-color: #111;
+  color: #eee;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 2rem;
 }
-header, footer {
-  background: #222;
-  color: white;
-  padding: 1em;
-  text-align: center;
+
+img {
+  border: 1px solid #444;
 }
-nav a {
-  margin: 0 1em;
-  color: white;
+
+button, input {
+  font-family: inherit;
+  border: 1px solid #444;
+  background-color: #222;
+  color: #eee;
+  padding: 0.5rem 1rem;
+  margin: 0.25rem;
+}
+
+button:hover {
+  background-color: #333;
+  border-color: #666;
+}
+
+input {
+  width: 100%;
+  max-width: 300px;
+}
+
+h1, h2, h3 {
+  color: #0f0;  /* 类终端绿色标题 */
+}
+
+ul#users li {
+  cursor: pointer;
+  padding: 0.5rem;
+  border-bottom: 1px solid #333;
+}
+
+ul#users li:hover {
+  background-color: #222;
+}
+
+a {
+  color: #0af;
   text-decoration: none;
 }
-main {
-  margin-top: 2em;
+
+a:hover {
+  color: #0f0;
+  text-decoration: underline;
 }
