@@ -2,6 +2,8 @@ const socket = io();
 let mySocketId = "";
 let myUsername = "";
 let currentRoomId = "";
+let latestChallengerId = "";
+
 
 document.getElementById("submit-name").onclick = () => {
   myUsername = document.getElementById("username").value.trim();
@@ -36,9 +38,9 @@ socket.on("updatePlayerList", (users) => {
 });
 
 socket.on("challengeReceived", ({ from, socketId }) => {
-  console.log(`Received challenge from ${from} (${socketId})`);
-  // 临时跳过 confirm，直接接受
-  socket.emit("challengeAccepted", { challengerId: socketId });
+  latestChallengerId = socketId;
+  document.getElementById("challenge-text").textContent = `${from} challenges you! Accept?`;
+  new bootstrap.Modal(document.getElementById("challengeModal")).show();
 });
 
 
@@ -92,4 +94,9 @@ socket.on("gameOver", ({ finalScores }) => {
   
     alert(resultText);
   });
+  
+  document.getElementById("accept-btn").onclick = () => {
+    socket.emit("challengeAccepted", { challengerId: latestChallengerId });
+    bootstrap.Modal.getInstance(document.getElementById("challengeModal")).hide();
+  };
   
